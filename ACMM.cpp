@@ -115,6 +115,10 @@ ACMM::~ACMM()
     cudaFree(rand_states_cuda);
     cudaFree(selected_views_cuda);
     cudaFree(depths_cuda);
+    for(int i = 0; i < depths.size(); i++){
+      delete depths[i].data;
+    }
+    depths.clear();
 
     if (params.geom_consistency) {
         for (int i = 0; i < num_images; ++i) {
@@ -516,6 +520,9 @@ void ACMM::InuputInitialization(const std::string &dense_folder, const std::vect
     params.disparity_max = cameras[0].K[0] * params.baseline / params.depth_min;
 
     if (params.geom_consistency) {
+        for(int i = 0; i < depths.size(); i++){
+          delete depths[i].data;
+        }
         depths.clear();
 
         std::stringstream result_path;
@@ -648,6 +655,9 @@ void ACMM::CudaSpaceInitialization(const std::string &dense_folder, const Proble
         }
         cudaMemcpy(plane_hypotheses_cuda, plane_hypotheses_host, sizeof(float4) * width * height, cudaMemcpyHostToDevice);
         cudaMemcpy(costs_cuda, costs_host, sizeof(float) * width * height, cudaMemcpyHostToDevice);
+        delete ref_depth.data;
+        delete ref_normal.data;
+        delete ref_cost.data;
     }
 
     if (params.hierarchy) {
@@ -706,6 +716,9 @@ void ACMM::CudaSpaceInitialization(const std::string &dense_folder, const Proble
 
         cudaMemcpy(scaled_plane_hypotheses_cuda, scaled_plane_hypotheses_host, sizeof(float4) * height * width, cudaMemcpyHostToDevice);
         cudaMemcpy(plane_hypotheses_cuda, plane_hypotheses_host, sizeof(float4) * cameras[0].width * cameras[0].height, cudaMemcpyHostToDevice);
+        delete ref_depth.data;
+        delete ref_normal.data;
+        delete ref_cost.data;
     }
 }
 

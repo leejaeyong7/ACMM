@@ -22,6 +22,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <unistd.h>
 #include <map>
 #include <memory>
 #include "iomanip"
