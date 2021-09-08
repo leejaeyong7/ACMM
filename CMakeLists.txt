@@ -1,16 +1,20 @@
 cmake_minimum_required (VERSION 2.8)
 project (ACMM)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 find_package(CUDA 6.0 REQUIRED ) # For Cuda Managed Memory and c++11
 find_package(OpenCV REQUIRED )
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(.)
 
-set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-O3 --use_fast_math --maxrregcount=128 --ptxas-options=-v -std=c++11 --compiler-options -Wall -gencode arch=compute_86,code=sm_86)
+set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-O3 --use_fast_math --maxrregcount=128 --ptxas-options=-v -std=c++17 --compiler-options -Wall -gencode arch=compute_86,code=sm_86)
 
+# add_definitions(-std=c++17)
 if(CMAKE_COMPILER_IS_GNUCXX)
-    add_definitions(-std=c++11)
     add_definitions(-pthread)
     add_definitions(-Wall)
     add_definitions(-Wextra)
@@ -36,6 +40,7 @@ cuda_add_executable(
     ACMM.cu
     main.cpp
     )
+target_compile_features(ACMM PRIVATE cxx_std_17)
 
 # For linking ...
 # Specify target & libraries to link it with

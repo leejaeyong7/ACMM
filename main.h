@@ -19,6 +19,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
@@ -26,6 +27,7 @@
 #include <map>
 #include <memory>
 #include "iomanip"
+#include "argparse.hpp"
 
 #include <sys/stat.h> // mkdir
 #include <sys/types.h> // mkdir
@@ -46,7 +48,10 @@ struct Camera {
 struct Problem {
     int ref_image_id;
     std::vector<int> src_image_ids;
-    int max_image_size = 3200;
+    // int max_image_size = 3200;
+    // int max_image_size = 1920;
+    int max_image_size = 960;
+    int size_bound = 1000;
     int num_downscale = 0;
     int cur_image_size = 3200;
 };
