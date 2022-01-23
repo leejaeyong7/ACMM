@@ -1,5 +1,7 @@
 #include "main.h"
 #include "ACMM.h"
+#include "argparse.hpp"
+#include <filesystem>
 
 void GenerateSampleList(const std::string &dense_folder, std::vector<Problem> &problems)
 {
@@ -284,7 +286,7 @@ void RunFusion(const std::string &dense_folder, const std::string & out_folder, 
                     }
                 }
 
-                if (num_consistent >= 2) {
+                if (num_consistent >= 4) {
                     consistent_Point.x /= (num_consistent + 1.0f);
                     consistent_Point.y /= (num_consistent + 1.0f);
                     consistent_Point.z /= (num_consistent + 1.0f);
@@ -363,6 +365,7 @@ int main(int argc, char* argv[])
      bool geom_consistency = false;
      bool hierarchy = false;
      bool multi_geometry = false;
+     /*
      while (max_num_downscale >= 0) {
         std::cout << "Scale: " << max_num_downscale << std::endl;
 
@@ -419,6 +422,7 @@ int main(int argc, char* argv[])
 
         max_num_downscale--;
     }
+    */
 
     geom_consistency = true;
     RunFusion(dense_folder, output_folder, problems, geom_consistency, ply_file);
